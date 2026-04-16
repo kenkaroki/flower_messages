@@ -53,7 +53,7 @@ function generateLink(formData) {
     message,
   });
 
-  return `${location.origin}/flower_message?${params.toString()}`;
+  return `${location.origin}/flower_message/messages?${params.toString()}`;
 }
 
 form.addEventListener("submit", (e) => {

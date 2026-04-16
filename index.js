@@ -1,5 +1,5 @@
 button = document.getElementById('navigate');
 
 button.onclick = () => {
-    open('/builder')
+    open('/flower_messages/builder')
 }
