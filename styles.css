@@ -1,0 +1,167 @@
+/* ===== GLOBAL COLOR CONTROL ===== */
+:root {
+  --flower-hue: 200; /* CHANGE THIS */
+  --flower-sat: 80%;
+  --flower-light: 60%;
+}
+
+body {
+  margin: 0;
+  background: #0f172a;
+  overflow: hidden;
+  font-family: Arial, sans-serif;
+}
+
+/* Garden */
+#garden {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+}
+
+/* ===== FLOWER ===== */
+.flower {
+  position: absolute;
+}
+
+/* Center */
+.flower::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+
+  background: radial-gradient(
+    circle,
+    hsl(var(--flower-hue), var(--flower-sat), 75%) 0%,
+    hsl(var(--flower-hue), var(--flower-sat), var(--flower-light)) 60%,
+    hsl(var(--flower-hue), var(--flower-sat), 40%) 100%
+  );
+
+  border-radius: 50%;
+  transform: scale(1);
+  transition: all 3s ease;
+
+  box-shadow:
+    0 0 10px hsl(var(--flower-hue), var(--flower-sat), 70%),
+    0 0 20px hsl(var(--flower-hue), var(--flower-sat), 50%);
+}
+
+/* Petals */
+.flower::after {
+  content: "";
+  position: absolute;
+  width: 30%;
+  height: 30%;
+  top: 35%;
+  left: 35%;
+  background: hsl(var(--flower-hue), var(--flower-sat), var(--flower-light));
+  opacity: 0;
+}
+
+/* Bloom */
+.flower.bloom::before {
+  transform: scale(0.3);
+}
+
+.flower.bloom::after {
+  opacity: 1;
+
+  box-shadow:
+    0 -30px 0 5px hsl(var(--flower-hue), var(--flower-sat), 65%),
+    20px -20px 0 5px hsl(calc(var(--flower-hue) + 5), var(--flower-sat), 60%),
+    30px 0 0 5px hsl(calc(var(--flower-hue) + 10), var(--flower-sat), 55%),
+    20px 20px 0 5px hsl(calc(var(--flower-hue) + 5), var(--flower-sat), 60%),
+    0 30px 0 5px hsl(var(--flower-hue), var(--flower-sat), 65%),
+    -20px 20px 0 5px hsl(calc(var(--flower-hue) - 5), var(--flower-sat), 60%),
+    -30px 0 0 5px hsl(calc(var(--flower-hue) - 10), var(--flower-sat), 55%),
+    -20px -20px 0 5px hsl(calc(var(--flower-hue) - 5), var(--flower-sat), 60%),
+    15px -30px 0 5px hsl(calc(var(--flower-hue) + 15), var(--flower-sat), 50%),
+    -15px 30px 0 5px hsl(calc(var(--flower-hue) - 15), var(--flower-sat), 50%);
+
+  transform: rotate(45deg);
+  transition: all 3s ease;
+  filter: drop-shadow(0 6px 12px rgba(0,0,0,0.6));
+}
+
+/* ===== STEM ===== */
+.stem {
+  position: absolute;
+  bottom: -80px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 0;
+  background: linear-gradient(to bottom, #22c55e, #14532d);
+  border-radius: 2px;
+  box-shadow: 0 0 6px rgba(0,0,0,0.4);
+  transition: height 3s ease;
+}
+
+.flower.bloom .stem {
+  height: var(--stem-height);
+}
+
+/* ===== CARD ===== */
+#card {
+  position: fixed;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%) scale(0.8);
+  opacity: 0;
+  perspective: 1000px;
+  z-index: 10;
+}
+
+#card.show {
+  opacity: 1;
+  transform: translateX(-50%) scale(1);
+  transition: 1s ease;
+}
+
+.card-inner {
+  width: 240px;
+  height: 150px;
+  transform-style: preserve-3d;
+  transition: transform 1.5s;
+}
+
+#card.show .card-inner {
+  transform: rotateY(180deg);
+}
+
+.card-front,
+.card-inside {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backface-visibility: hidden;
+}
+
+.card-front {
+  background: linear-gradient(135deg, pink, hotpink);
+  font-size: 2rem;
+}
+
+.card-inside {
+  background: white;
+  color: black;
+  transform: rotateY(180deg);
+  flex-direction: column;
+  padding: 12px;
+  text-align: center;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 600px) {
+  .flower { transform: scale(0.7); }
+  .card-inner { width: 90vw; height: 160px; }
+}
+
+@media (min-width: 1400px) {
+  .flower { transform: scale(1.2); }
+}
