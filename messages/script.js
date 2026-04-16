@@ -7,13 +7,37 @@ let flowers = [];
    🌸 URL VARIABLES
 ========================= */
 function updateVariables() {
-  const params = new URLSearchParams(window.location.search);
+  const params = new URLSearchParams(location.search);
+  const encoded = params.get("data");
 
-  const hue = params.get("hue") || "330";
-  const recipient = params.get("recipient") || "Unknown";
-  const sender = params.get("sender") || "Someone";
-  const message = params.get("message") || "No message provided";
+  let hue = "330";
+  let recipient = "Unknown";
+  let sender = "Someone";
+  let message = "No message provided";
 
+  // 🔐 PRIORITY: encoded data
+  if (encoded) {
+    try {
+      const decoded = JSON.parse(atob(encoded));
+
+      hue = decoded.hue ?? hue;
+      recipient = decoded.recipient ?? recipient;
+      sender = decoded.sender ?? sender;
+      message = decoded.message ?? message;
+    } catch (e) {
+      console.error("Invalid encoded data:", e);
+    }
+  }
+
+  // (optional fallback only if no data)
+  else {
+    hue = params.get("hue") || hue;
+    recipient = params.get("recipient") || recipient;
+    sender = params.get("sender") || sender;
+    message = params.get("message") || message;
+  }
+
+  // UI update
   document.getElementById("recipient_name").innerText = recipient;
   document.getElementById("message").innerText = message;
   document.getElementById("sender").innerText = `— ${sender}`;

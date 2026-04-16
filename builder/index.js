@@ -41,19 +41,16 @@ function getHue(color) {
 }
 
 function generateLink(formData) {
-  const hue = getHue(formData.get("flower_color"));
-  const recipient = formData.get("recipient_name");
-  const sender = formData.get("sender_name");
-  const message = formData.get("message");
+  const payload = {
+    hue: getHue(formData.get("flower_color")),
+    recipient: formData.get("recipient_name"),
+    sender: formData.get("sender_name"),
+    message: formData.get("message"),
+  };
 
-  const params = new URLSearchParams({
-    hue: String(hue),
-    recipient,
-    sender,
-    message,
-  });
+  const encoded = btoa(JSON.stringify(payload));
 
-  return `${location.origin}/flower_messages/messages?${params.toString()}`;
+  return `${location.origin}/flower_messages/messages/?data=${encodeURIComponent(encoded)}`;
 }
 
 form.addEventListener("submit", (e) => {
